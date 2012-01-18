@@ -122,6 +122,12 @@ class CrawlerWidget : public QSplitter
     // Called when the text on the search line is modified
     void searchTextChangeHandler();
 
+    // Select a whole line in the VisibilityBox when the user selects
+    // either the icon or text.
+    void visibilitySelected( int index );
+    void visibilityActivated( int index );
+    void visibilityHighlighted( int index );
+
   private:
     // State machine holding the state of the search, used to allow/disallow
     // auto-refresh and inform the user via the info line.

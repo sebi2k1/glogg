@@ -253,6 +253,14 @@ CrawlerWidget::CrawlerWidget(SavedSearches* searches, QWidget *parent)
     // Search auto-refresh
     connect( searchRefreshCheck, SIGNAL( stateChanged( int ) ),
             this, SLOT( searchRefreshChangedHandler( int ) ) );
+
+    // Visibility
+    connect( visibilityBox, SIGNAL( currentIndexChanged( int ) ),
+            this, SLOT( visibilitySelected( int ) ) );
+    connect( visibilityBox, SIGNAL( activated( int ) ),
+            this, SLOT( visibilityActivated( int ) ) );
+    connect( visibilityBox, SIGNAL( highlighted( int ) ),
+            this, SLOT( visibilityHighlighted( int ) ) );
 }
 
 // Start the asynchronous loading of a file.
@@ -563,6 +571,33 @@ void CrawlerWidget::searchTextChangeHandler()
     // We suspend auto-refresh
     searchState_.changeExpression();
     printSearchInfoMessage( logFilteredData_->getNbMatches() );
+}
+
+void CrawlerWidget::visibilitySelected( int index )
+{
+    LOG(logDEBUG) << "CrawlerWidget::visibilitySelected";
+
+    QComboBox *combo = qobject_cast<QComboBox*>(this->sender());
+    combo->setCurrentIndex( index );
+    visibilityBox->setCurrentIndex( index );
+}
+
+void CrawlerWidget::visibilityActivated( int index )
+{
+    LOG(logDEBUG) << "CrawlerWidget::visibilityActivated";
+
+    QComboBox *combo = qobject_cast<QComboBox*>(this->sender());
+    combo->setCurrentIndex( index );
+    visibilityBox->setCurrentIndex( index );
+}
+
+void CrawlerWidget::visibilityHighlighted( int index )
+{
+    LOG(logDEBUG) << "CrawlerWidget::visibilityHighlighted";
+
+    QComboBox *combo = qobject_cast<QComboBox*>(this->sender());
+    combo->setCurrentIndex( index );
+    visibilityBox->setCurrentIndex( index );
 }
 
 //
