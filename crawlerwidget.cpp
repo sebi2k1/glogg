@@ -597,7 +597,7 @@ void CrawlerWidget::searchRefreshChangedHandler( int state )
     searchState_.setAutorefresh( state == Qt::Checked );
     printSearchInfoMessage( logFilteredData_->getNbMatches() );
 
-    filteredView->followSet(state ? true : false);
+    filteredView->followSet(state == Qt::Checked);
 }
 
 void CrawlerWidget::filteredViewFollowDisabled()
@@ -610,6 +610,8 @@ void CrawlerWidget::searchTextChangeHandler()
     // We suspend auto-refresh
     searchState_.changeExpression();
     printSearchInfoMessage( logFilteredData_->getNbMatches() );
+
+    searchRefreshCheck->setChecked(false);
 }
 
 void CrawlerWidget::changeFilteredViewVisibility( int index )
