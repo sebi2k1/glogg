@@ -235,13 +235,8 @@ CrawlerWidget::CrawlerWidget(SavedSearches* searches, QWidget *parent)
     // Follow option (up and down)
     connect(this, SIGNAL( followSet( bool ) ),
             logMainView, SLOT( followSet( bool ) ) );
-    connect(logMainView, SIGNAL( followDisabled() ),
-            this, SIGNAL( followDisabled() ) );
 
-    // Follow option (up and down)
-    connect(this, SIGNAL( followSet( bool ) ),
-            filteredView, SLOT( followSet( bool ) ) );
-    connect(filteredView, SIGNAL( followDisabled() ),
+    connect(logMainView, SIGNAL( followDisabled() ),
             this, SIGNAL( followDisabled() ) );
 
     connect( logFilteredData_, SIGNAL( searchProgressed( int, int ) ),
@@ -282,6 +277,9 @@ CrawlerWidget::CrawlerWidget(SavedSearches* searches, QWidget *parent)
     // Search auto-refresh
     connect( searchRefreshCheck, SIGNAL( stateChanged( int ) ),
             this, SLOT( searchRefreshChangedHandler( int ) ) );
+
+    connect(filteredView, SIGNAL( followDisabled() ),
+            this, SLOT( filteredViewFollowDisabled() ) );
 }
 
 // Start the asynchronous loading of a file.
@@ -425,6 +423,9 @@ void CrawlerWidget::jumpToMatchingLine(int filteredLineNb)
 {
     int mainViewLine = logFilteredData_->getMatchingLineNumber(filteredLineNb);
     logMainView->selectAndDisplayLine(mainViewLine);  // FIXME: should be done with a signal.
+
+    // Disable follow mode of filtered view to give user a chance to read logs
+    searchRefreshCheck->setChecked(false);
 }
 
 void CrawlerWidget::markLineFromMain( qint64 line )
@@ -595,6 +596,13 @@ void CrawlerWidget::searchRefreshChangedHandler( int state )
 {
     searchState_.setAutorefresh( state == Qt::Checked );
     printSearchInfoMessage( logFilteredData_->getNbMatches() );
+
+    filteredView->followSet(state ? true : false);
+}
+
+void CrawlerWidget::filteredViewFollowDisabled()
+{
+    searchRefreshCheck->setChecked(false);
 }
 
 void CrawlerWidget::searchTextChangeHandler()

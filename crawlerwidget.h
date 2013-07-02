@@ -122,6 +122,9 @@ class CrawlerWidget : public QSplitter
     // Called when the checkbox for search auto-refresh is changed
     void searchRefreshChangedHandler( int state );
 
+    // Called when the FilteredView shall leave follow mode
+    void filteredViewFollowDisabled();
+
     // Called when the text on the search line is modified
     void searchTextChangeHandler();
 
